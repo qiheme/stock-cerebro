@@ -73,6 +73,7 @@ function News() {
   } else {
     return (
       <div className="News">
+        <br />
         <Container className="container">
           <Row className="stock-row">
             <Col>
