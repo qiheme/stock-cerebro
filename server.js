@@ -35,6 +35,7 @@ app.get("/api/finnhub/quote/:symbol", function(req, res) {
     if (error) {
       res.send(error);
     } else {
+      data.symbol = req.params.symbol;
       res.json(data);
     }
   });

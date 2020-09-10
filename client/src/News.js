@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import WatchList from "./WatchList";
 import StockModal from "./StockModal";
 import { Button, CardColumns, Carousel, Col, Container, Form, Jumbotron, Row, Spinner } from "react-bootstrap";
 
@@ -17,6 +18,7 @@ function News() {
       .get(`/api/finnhub/general`)
       .then((response) => {
         console.log(response);
+        // TODO: Handle 429s from Finnhub
         setStocks(response.data);
         setLoading(false);
       });
@@ -119,6 +121,7 @@ function News() {
                 </p>
               </Jumbotron> */}
               <br></br>
+              <WatchList></WatchList>
               <CardColumns>
                 {stocks.map((stock, i) => {
                   if (i >= 5) {
