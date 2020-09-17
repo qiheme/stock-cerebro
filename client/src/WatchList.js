@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Table } from "react-bootstrap";
 import {
   Button,
+  Badge,
   CardColumns,
   Carousel,
   Col,
@@ -14,8 +15,23 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 
+const styles = {
+  backgroundColor: "#D3D3D3",
+  borderRadius: "7px"
+};
+
 export default function WatchList() {
   const [stocks, setStocks] = useState([]);
+
+  const stockBadgeStatus = stock => {
+    if (stock.c > stock.o) {
+      return "success";
+    } else if (stock.c < stock.o) {
+      return "danger";
+    } else {
+      return "secondary";
+    }
+  };
 
   useEffect(() => {
     const watchListArr = ["NFLX", "AAPL", "CMCSA", "TSLA", "BA"];
@@ -30,16 +46,23 @@ export default function WatchList() {
   }, []);
   return (
     <>
-      <Jumbotron>
-        <Container>
-          {stocks.map(stock => {
-            return <Row>
-              <Col>{stock.data.symbol}</Col>
-              <Col>{stock.data.c}</Col>
-            </Row>
-          })}
-        </Container>
-      </Jumbotron>
+      <Table hover responsive="sm" style={styles}>
+        <thead>
+          <tr>
+            <th colSpan="2">Watchlist</th>
+          </tr>
+        </thead>
+        <tbody>
+            {stocks.map((stock) => {
+              return (
+                <tr>
+                  <td>{stock.data.symbol}</td>
+                  <td><Badge variant={stockBadgeStatus(stock.data)}>{stock.data.c.toFixed(2)}</Badge></td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </Table>
     </>
   );
 }

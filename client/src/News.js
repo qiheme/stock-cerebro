@@ -2,7 +2,17 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import WatchList from "./WatchList";
 import StockModal from "./StockModal";
-import { Button, CardColumns, Carousel, Col, Container, Form, Jumbotron, Row, Spinner } from "react-bootstrap";
+import {
+  Button,
+  CardColumns,
+  Carousel,
+  Col,
+  Container,
+  Form,
+  Jumbotron,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 
 import axios from "axios";
 import "./News.css";
@@ -14,26 +24,22 @@ function News() {
   const [stocks, setStocks] = useState([]);
 
   const searchNews = () => {
-    axios
-      .get(`/api/finnhub/general`)
-      .then((response) => {
-        console.log(response);
-        // TODO: Handle 429s from Finnhub
-        setStocks(response.data);
-        setLoading(false);
-      });
+    axios.get(`/api/finnhub/general`).then((response) => {
+      console.log(response);
+      // TODO: Handle 429s from Finnhub
+      setStocks(response.data);
+      setLoading(false);
+    });
   };
 
   const searchStock = () => {
     const symbol = document.getElementById("stock-input").value;
-    axios
-      .get(`/api/finnhub/quote/${symbol}`)
-      .then((response) => {
-        console.log(response);
-        response.data.symbol = symbol;
-        setSearchedStock(response.data);
-        setModalShow(true);
-      });
+    axios.get(`/api/finnhub/quote/${symbol}`).then((response) => {
+      console.log(response);
+      response.data.symbol = symbol;
+      setSearchedStock(response.data);
+      setModalShow(true);
+    });
   };
 
   const searchCompanyInfo = () => {
@@ -53,7 +59,12 @@ function News() {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+  };
+
+  const imageStyles = {
+    height: "400px",
+    width: "700px",
   };
 
   useEffect(searchNews, []);
@@ -62,7 +73,7 @@ function News() {
     return (
       <div style={loaderStyles}>
         <Container>
-          <Row style={{textAlign: `center`}}>
+          <Row style={{ textAlign: `center` }}>
             <Col>
               <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
@@ -79,49 +90,43 @@ function News() {
         <Container className="container">
           <Row className="stock-row">
             <Col>
-             <Carousel>
-                {stocks.map((stock, i) => {
-                  if (i < 5) {
-                    return (
-                      <Carousel.Item>
-                        <a href={stock.url} target="_blank">
-                          <img
-                            className="d-block w-100"
-                            src={stock.image}
-                            alt={stock.headline}
-                          />
-                        </a>
-                        <Carousel.Caption>
-                          <h3>{stock.headline}</h3>
-                        </Carousel.Caption>
-                      </Carousel.Item>
-                    );
-                  }
-                })}
-              </Carousel>
-              {/* <Jumbotron>
-                <h1>Hello, world!</h1>
-                <p>This is a very simple Newslication to search stock news.</p>
-                <Form.Group>
-                  <Form.Row>
-                    <Col>
-                      <Form.Control
-                        id="stock-input"
-                        size="sm"
-                        type="text"
-                        placeholder="Please enter a stock"
-                      />
-                    </Col>
-                  </Form.Row>
-                </Form.Group>
-                <p>
-                  <Button type="submit" onClick={searchStock} variant="primary">
-                    Search
-                  </Button>
-                </p>
-              </Jumbotron> */}
+              <Row>
+                <Col></Col>
+                <Col xs={8}>
+                  <Carousel>
+                    {stocks.map((stock, i) => {
+                      if (i < 5) {
+                        return (
+                          <Carousel.Item>
+                            <a href={stock.url} target="_blank">
+                              <img
+                                className="d-block w-100"
+                                src={stock.image}
+                                alt={stock.headline}
+                                style={imageStyles}
+                              />
+                            </a>
+                            <Carousel.Caption>
+                              <h3>{stock.headline}</h3>
+                            </Carousel.Caption>
+                          </Carousel.Item>
+                        );
+                      }
+                    })}
+                  </Carousel>
+                </Col>
+                <Col></Col>
+              </Row>
+
               <br></br>
-              <WatchList></WatchList>
+              <Row className="watchlist-row">
+                <Col>
+                  <WatchList></WatchList>
+                </Col>
+                <Col></Col>
+                <Col></Col>
+              </Row>
+
               <CardColumns>
                 {stocks.map((stock, i) => {
                   if (i >= 5) {
@@ -149,7 +154,6 @@ function News() {
       </div>
     );
   }
-
 }
 
 export default News;
