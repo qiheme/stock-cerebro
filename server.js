@@ -4,9 +4,29 @@ const dotenv = require("dotenv");
 const PORT = process.env.PORT || 3001;
 const finnhub = require('finnhub');
 const app = express();
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const compression = require("compression");
 
 // Load up env variables
 dotenv.config();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(compression());
+app.use(logger("dev"));
+
+app.use(express.static("public"));
+
+mongoose.connect(
+  process.env.MONGODB_URI || 'mongodb://localhost/stock-cerebro',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  }
+);
  
 // Initiate Finnhub configuration
 const finnbhubApiKey = finnhub.ApiClient.instance.authentications['api_key'];
