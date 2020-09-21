@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Card from "./Card";
+import NewsCard from "./NewsCard";
 import WatchList from "./WatchList";
 import StockModal from "./StockModal";
 import {
   Button,
+  Card,
   CardColumns,
   Carousel,
   Col,
@@ -22,6 +23,11 @@ function News() {
   const [modalShow, setModalShow] = useState(false);
   const [searchedStock, setSearchedStock] = useState({});
   const [stocks, setStocks] = useState([]);
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
 
   const searchNews = () => {
     axios.get(`/api/finnhub/general`).then((response) => {
@@ -91,9 +97,9 @@ function News() {
           <Row className="stock-row">
             <Col>
               <Row>
-                <Col></Col>
-                <Col xs={8}>
-                  <Carousel>
+                {/* <Col></Col> */}
+                <Col>
+                  {/* <Carousel>
                     {stocks.map((stock, i) => {
                       if (i < 5) {
                         return (
@@ -113,9 +119,39 @@ function News() {
                         );
                       }
                     })}
-                  </Carousel>
+                  </Carousel> */}
+                  <Card>
+                    <Card.Body>
+                      <Carousel activeIndex={index} onSelect={handleSelect}>
+                        {stocks.map((stock, i) => {
+                          if (i < 5) {
+                            return (
+                              <Carousel.Item>
+                                <a href={stock.url} target="_blank">
+                                  <img
+                                    className="d-block w-100"
+                                    src={stock.image}
+                                    alt={stock.headline}
+                                  />
+                                </a>
+                              </Carousel.Item>
+                            );
+                          }
+                        })}
+                      </Carousel>
+                    </Card.Body>
+                    <Card.Body>
+                      <Card.Title>{stocks[index].headline}</Card.Title>
+                      <Card.Text>{stocks[index].summary}</Card.Text>
+                    </Card.Body>
+                    {/* <Card.Footer>
+                      <small className="text-muted">
+                        Last updated 3 mins ago
+                      </small>
+                    </Card.Footer> */}
+                  </Card>
                 </Col>
-                <Col></Col>
+                {/* <Col></Col> */}
               </Row>
 
               <br></br>
@@ -132,12 +168,12 @@ function News() {
                   if (i >= 5) {
                     return (
                       <Col>
-                        <Card
+                        <NewsCard
                           img={stock.image}
                           link={stock.url}
                           title={stock.headline}
                           text={stock.summary}
-                        ></Card>
+                        ></NewsCard>
                       </Col>
                     );
                   }
