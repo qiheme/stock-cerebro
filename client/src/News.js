@@ -128,7 +128,6 @@ function News() {
                             return (
                               <Carousel.Item>
                                 <a href={stock.url} target="_blank">
-                                  {/* TODO use kraken.io to optimize images */}
                                   <img
                                     className="d-block w-100"
                                     src={stock.image}
