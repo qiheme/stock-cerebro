@@ -2,7 +2,7 @@ let mongoose = require("mongoose");
 let db = require("../models");
 const finnhub = require('finnhub');
 
-mongoose.connect("mongodb://localhost/stock-cerebro", {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/stock-cerebro', {
   useNewUrlParser: true,
   useFindAndModify: false
 });
