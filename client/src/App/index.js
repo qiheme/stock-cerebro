@@ -1,8 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import News from "./News";
-import NavBar from "./NavBar";
-import { Nav } from "react-bootstrap";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import News from "../News";
+import NavBar from "../NavBar";
 
 export default function App() {
   return (

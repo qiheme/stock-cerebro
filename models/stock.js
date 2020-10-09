@@ -6,30 +6,30 @@ const stockSchema = new Schema(
   {
     description: {
       type: String,
-      default: ""
+      default: "",
     },
     displaySymbol: {
       type: String,
-      default: ""
+      default: "",
     },
     symbol: {
       type: String,
-      default: ""
+      default: "",
     },
     type: {
       type: String,
-      default: ""
+      default: "",
     },
     currency: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   {
     toJSON: {
       // include any virtual properties when data is requested
-      virtuals: true
-    }
+      virtuals: true,
+    },
   }
 );
 

@@ -1,41 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Nav, Navbar, Table } from "react-bootstrap";
-import {
-  Button,
-  Badge,
-  CardColumns,
-  Carousel,
-  Col,
-  Container,
-  Form,
-  FormControl,
-  Jumbotron,
-  Row,
-  Spinner,
-} from "react-bootstrap";
+import { Badge, Table } from "react-bootstrap";
 import axios from "axios";
 
 const styles = {
   backgroundColor: "#D3D3D3",
-  borderRadius: "7px"
+  borderRadius: "7px",
 };
 
 export default function WatchList() {
   const [stocks, setStocks] = useState([]);
 
-  const stockBadgeStatus = stock => {
+  const stockBadgeStatus = (stock) => {
     if (stock.c > stock.o) {
       return "success";
     } else if (stock.c < stock.o) {
       return "danger";
-    } else {
-      return "secondary";
     }
+    return "secondary";
   };
 
   useEffect(() => {
     const watchListArr = ["NFLX", "AAPL", "CMCSA", "TSLA", "BA"];
-    let stockRequestArr = [];
+    const stockRequestArr = [];
     for (let i = 0; i < watchListArr.length; i++) {
       stockRequestArr.push(axios.get(`/api/finnhub/quote/${watchListArr[i]}`));
     }
@@ -53,14 +39,18 @@ export default function WatchList() {
           </tr>
         </thead>
         <tbody>
-            {stocks.map((stock) => {
-              return (
-                <tr>
-                  <td>{stock.data.symbol}</td>
-                  <td><Badge variant={stockBadgeStatus(stock.data)}>{stock.data.c.toFixed(2)}</Badge></td>
-                </tr>
-              );
-            })}
+          {stocks.map((stock, i) => {
+            return (
+              <tr key={i}>
+                <td>{stock.data.symbol}</td>
+                <td>
+                  <Badge variant={stockBadgeStatus(stock.data)}>
+                    {stock.data.c.toFixed(2)}
+                  </Badge>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </>
