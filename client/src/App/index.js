@@ -1,8 +1,8 @@
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
 import News from "../pages/News";
 import NavBar from "../molecules/NavBar";
 import React from "react";
-import { StockInfo } from "../pages/StockInfo";
+import {StockInfo} from "../pages/StockInfo";
 
 export default function App() {
   return (

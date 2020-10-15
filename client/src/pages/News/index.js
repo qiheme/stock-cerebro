@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import NewsCard from "../../molecules/NewsCard";
 import WatchList from "../../molecules/WatchList";
 import StockModal from "../../molecules/StockModal";
@@ -11,12 +11,14 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
+import {useAppContext} from "../../store/GlobalState";
 
 import axios from "axios";
 import "./News.css";
 
 function News() {
-  const [loading, setLoading] = useState(true);
+  const [state, dispatch] = useAppContext();
+
   const [modalShow, setModalShow] = useState(false);
   const [searchedStock] = useState({});
   const [stocks, setStocks] = useState([]);
@@ -31,7 +33,7 @@ function News() {
       console.log(response);
       // TODO: Handle 429s from Finnhub
       setStocks(response.data);
-      setLoading(false);
+      dispatch({type: "LOADING_COMPLETE"});
     });
   };
 
@@ -72,11 +74,11 @@ function News() {
 
   useEffect(searchNews, []);
 
-  if (loading) {
+  if (state.page.status.loading) {
     return (
       <div style={loaderStyles}>
         <Container>
-          <Row style={{ textAlign: "center" }}>
+          <Row style={{textAlign: "center"}}>
             <Col>
               <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
