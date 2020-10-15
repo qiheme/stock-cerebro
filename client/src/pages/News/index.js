@@ -21,7 +21,6 @@ function News() {
 
   const [modalShow, setModalShow] = useState(false);
   const [searchedStock] = useState({});
-  const [stocks, setStocks] = useState([]);
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex) => {
@@ -32,7 +31,7 @@ function News() {
     axios.get("/api/finnhub/general").then((response) => {
       console.log(response);
       // TODO: Handle 429s from Finnhub
-      setStocks(response.data);
+      dispatch({type: "FETCH_NEWS_SUCCESS", payload: response.data});
       dispatch({type: "LOADING_COMPLETE"});
     });
   };
@@ -123,18 +122,20 @@ function News() {
                 <Card>
                   <Card.Body>
                     <Carousel activeIndex={index} onSelect={handleSelect}>
-                      {stocks.map((stock, i) => {
+                      {state.data.news.response.map((stock, i) => {
                         return i < 5 ? (
-                          <Carousel.Item>
+                          <Carousel.Item key={i}>
                             <a
                               href={stock.url}
                               target="_blank"
                               rel="noreferrer"
+                              key={i}
                             >
                               <img
                                 className="d-block w-100"
                                 src={stock.image}
                                 alt={stock.headline}
+                                key={i}
                               />
                             </a>
                           </Carousel.Item>
@@ -143,8 +144,12 @@ function News() {
                     </Carousel>
                   </Card.Body>
                   <Card.Body>
-                    <Card.Title>{stocks[index].headline}</Card.Title>
-                    <Card.Text>{stocks[index].summary}</Card.Text>
+                    <Card.Title>
+                      {state.data.news.response[index].headline}
+                    </Card.Title>
+                    <Card.Text>
+                      {state.data.news.response[index].summary}
+                    </Card.Text>
                   </Card.Body>
                   {/* <Card.Footer>
                       <small className="text-muted">
@@ -166,15 +171,16 @@ function News() {
             </Row>
 
             <CardColumns>
-              {stocks.map((stock, i) => {
+              {state.data.news.response.map((stock, i) => {
                 if (i >= 5) {
                   return (
-                    <Col>
+                    <Col key={i}>
                       <NewsCard
                         img={stock.image}
                         link={stock.url}
                         title={stock.headline}
                         text={stock.summary}
+                        key={i}
                       ></NewsCard>
                     </Col>
                   );

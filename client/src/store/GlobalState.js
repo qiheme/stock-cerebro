@@ -5,14 +5,34 @@ const {Provider} = AppContext;
 
 const reducer = (state, action) => {
   switch (action.type) {
-    // case "add":
-    //   return {count: state.count + 1};
-    // case "subtract":
-    //   return {count: state.count - 1};
     case "LOADING_BEGIN":
       return {...state, ...{page: {status: {loading: true}}}};
     case "LOADING_COMPLETE":
       return {...state, ...{page: {status: {loading: false}}}};
+    case "FETCH_NEWS_SUCCESS":
+      return {
+        ...state,
+        ...{
+          data: {
+            news: {
+              status: true,
+              response: action.payload,
+            },
+          },
+        },
+      };
+    case "FETCH_NEWS_FAILED":
+      return {
+        ...state,
+        ...{
+          data: {
+            news: {
+              status: false,
+              response: [],
+            },
+          },
+        },
+      };
     default:
       throw new Error(`Invalid action type: ${action.type}`);
   }
@@ -23,6 +43,12 @@ const initialState = {
     status: {
       loading: true,
       error: false,
+    },
+  },
+  data: {
+    news: {
+      status: false,
+      response: [],
     },
   },
 };
