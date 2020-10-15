@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import NewsCard from "../NewsCard";
-import WatchList from "../WatchList";
-import StockModal from "../StockModal";
+import NewsCard from "../../molecules/NewsCard";
+import WatchList from "../../molecules/WatchList";
+import StockModal from "../../molecules/StockModal";
 import {
   Card,
   CardColumns,
@@ -87,6 +87,7 @@ function News() {
       </div>
     );
   }
+
   return (
     <div className="News">
       <br />
@@ -121,18 +122,22 @@ function News() {
                   <Card.Body>
                     <Carousel activeIndex={index} onSelect={handleSelect}>
                       {stocks.map((stock, i) => {
-                        return (
-                          ( i < 5 ? <Carousel.Item>
-                                      <a href={stock.url} target="_blank" rel="noreferrer">
-                                        <img
-                                          className="d-block w-100"
-                                          src={stock.image}
-                                          alt={stock.headline}
-                                        />
-                                      </a>
-                                    </Carousel.Item>
-                                  : null )
-                      )})}
+                        return i < 5 ? (
+                          <Carousel.Item>
+                            <a
+                              href={stock.url}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <img
+                                className="d-block w-100"
+                                src={stock.image}
+                                alt={stock.headline}
+                              />
+                            </a>
+                          </Carousel.Item>
+                        ) : null;
+                      })}
                     </Carousel>
                   </Card.Body>
                   <Card.Body>

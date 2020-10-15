@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
@@ -6,23 +6,23 @@ const stockSchema = new Schema(
   {
     description: {
       type: String,
-      default: "",
+      default: '',
     },
     displaySymbol: {
       type: String,
-      default: "",
+      default: '',
     },
     symbol: {
       type: String,
-      default: "",
+      default: '',
     },
     type: {
       type: String,
-      default: "",
+      default: '',
     },
     currency: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   {
@@ -33,6 +33,6 @@ const stockSchema = new Schema(
   }
 );
 
-const Stock = mongoose.model("Stock", stockSchema);
+const Stock = mongoose.model('Stock', stockSchema);
 
 module.exports = Stock;

@@ -16,12 +16,14 @@ export default function WatchList() {
     } else if (stock.c < stock.o) {
       return "danger";
     }
+
     return "secondary";
   };
 
   useEffect(() => {
     const watchListArr = ["NFLX", "AAPL", "CMCSA", "TSLA", "BA"];
     const stockRequestArr = [];
+
     for (let i = 0; i < watchListArr.length; i++) {
       stockRequestArr.push(axios.get(`/api/finnhub/quote/${watchListArr[i]}`));
     }
@@ -30,6 +32,7 @@ export default function WatchList() {
       setStocks(stockResults);
     });
   }, []);
+
   return (
     <>
       <Table hover responsive="sm" style={styles}>
