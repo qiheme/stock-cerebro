@@ -12,8 +12,8 @@ import {
   Spinner,
 } from "react-bootstrap";
 import {useAppContext} from "../../store/GlobalState";
+import {searchNews} from "../../utils";
 
-import axios from "axios";
 import "./News.css";
 
 function News() {
@@ -25,15 +25,6 @@ function News() {
 
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
-  };
-
-  const searchNews = () => {
-    axios.get("/api/finnhub/general").then((response) => {
-      console.log(response);
-      // TODO: Handle 429s from Finnhub
-      dispatch({type: "FETCH_NEWS_SUCCESS", payload: response.data});
-      dispatch({type: "LOADING_COMPLETE"});
-    });
   };
 
   // const searchStock = () => {
@@ -71,7 +62,34 @@ function News() {
   //   width: "700px",
   // };
 
-  useEffect(searchNews, []);
+  // useEffect(() => {
+  //   let mounted = true;
+
+  //   if (mounted) {
+  //     searchNews().then((response) => {
+  //       dispatch({type: "FETCH_NEWS_SUCCESS", payload: response.data});
+  //       dispatch({type: "LOADING_COMPLETE"});
+  //     });
+  //   }
+
+  //   return () => {
+  //     mounted = false;
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    searchNews().then((response) => {
+      if (mounted) {
+        dispatch({type: "FETCH_NEWS_SUCCESS", payload: response.data});
+        dispatch({type: "LOADING_COMPLETE"});
+      }
+    });
+
+    return function cleanup() {
+      mounted = false;
+    };
+  }, []);
 
   if (state.page.status.loading) {
     return (

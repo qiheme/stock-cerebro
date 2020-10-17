@@ -6,9 +6,9 @@ const {Provider} = AppContext;
 const reducer = (state, action) => {
   switch (action.type) {
     case "LOADING_BEGIN":
-      return {...state, ...{page: {status: {loading: true}}}};
+      return {...state, page: {status: {loading: true}}};
     case "LOADING_COMPLETE":
-      return {...state, ...{page: {status: {loading: false}}}};
+      return {...state, page: {status: {loading: false}}};
     case "FETCH_NEWS_SUCCESS":
       return {
         ...state,
