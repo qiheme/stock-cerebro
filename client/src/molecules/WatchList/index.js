@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Badge, Table } from "react-bootstrap";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Badge, Table } from 'react-bootstrap';
+import axios from 'axios';
 
 const styles = {
-  backgroundColor: "#D3D3D3",
-  borderRadius: "7px",
+  backgroundColor: '#D3D3D3',
+  borderRadius: '7px',
 };
 
 export default function WatchList() {
@@ -12,16 +12,16 @@ export default function WatchList() {
 
   const stockBadgeStatus = (stock) => {
     if (stock.c > stock.o) {
-      return "success";
+      return 'success';
     } else if (stock.c < stock.o) {
-      return "danger";
+      return 'danger';
     }
 
-    return "secondary";
+    return 'secondary';
   };
 
   useEffect(() => {
-    const watchListArr = ["NFLX", "AAPL", "CMCSA", "TSLA", "BA"];
+    const watchListArr = ['NFLX', 'AAPL', 'CMCSA', 'TSLA', 'BA'];
     const stockRequestArr = [];
 
     for (let i = 0; i < watchListArr.length; i++) {

@@ -1,10 +1,10 @@
-import React from "react";
-import { Card } from "react-bootstrap";
+import React from 'react';
+import { Card } from 'react-bootstrap';
 
 function NewsCard({ img, link, title, text }) {
   return (
     <div className="Card">
-      <Card style={{ width: "100%" }}>
+      <Card style={{ width: '100%' }}>
         <Card.Img variant="top" src={img} />
         <Card.Body>
           <Card.Title>{title}</Card.Title>

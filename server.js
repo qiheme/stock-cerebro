@@ -11,7 +11,7 @@ const compression = require('compression');
 // Load up env variables
 dotenv.config();
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(compression());
 app.use(logger('dev'));
