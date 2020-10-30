@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
-import NewsCard from "../../molecules/NewsCard";
-import WatchList from "../../molecules/WatchList";
-import StockModal from "../../molecules/StockModal";
+import React, { useEffect, useState } from 'react';
+import NewsCard from '../../molecules/NewsCard';
+import WatchList from '../../molecules/WatchList';
+import StockModal from '../../molecules/StockModal';
 import {
   Card,
   CardColumns,
@@ -10,11 +10,11 @@ import {
   Container,
   Row,
   Spinner,
-} from "react-bootstrap";
-import {useAppContext} from "../../store/GlobalState";
-import {searchNews} from "../../utils";
+} from 'react-bootstrap';
+import { useAppContext } from '../../store/GlobalState';
+import { searchNews } from '../../utils';
 
-import "./News.css";
+import './News.css';
 
 function News() {
   const [state, dispatch] = useAppContext();
@@ -27,75 +27,34 @@ function News() {
     setIndex(selectedIndex);
   };
 
-  // const searchStock = () => {
-  //   const symbol = document.getElementById("stock-input").value;
-  //   axios.get(`/api/finnhub/quote/${symbol}`).then((response) => {
-  //     console.log(response);
-  //     response.data.symbol = symbol;
-  //     setSearchedStock(response.data);
-  //     setModalShow(true);
-  //   });
-  // };
-
-  // const searchCompanyInfo = () => {
-  //   const symbol = document.getElementById("stock-input").value;
-  //   axios
-  //     .get(`/api/finnhub/news/${symbol}`)
-  //     .then((response) => {
-  //       console.log(response);
-  //       response.data.symbol = symbol;
-  //       setSearchedStock(response.data);
-  //       setModalShow(true);
-  //     });
-  // };
-
   const loaderStyles = {
-    minHeight: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   };
-
-  // const imageStyles = {
-  //   height: "400px",
-  //   width: "700px",
-  // };
-
-  // useEffect(() => {
-  //   let mounted = true;
-
-  //   if (mounted) {
-  //     searchNews().then((response) => {
-  //       dispatch({type: "FETCH_NEWS_SUCCESS", payload: response.data});
-  //       dispatch({type: "LOADING_COMPLETE"});
-  //     });
-  //   }
-
-  //   return () => {
-  //     mounted = false;
-  //   };
-  // }, []);
 
   useEffect(() => {
     let mounted = true;
+
     searchNews().then((response) => {
       if (mounted) {
-        dispatch({type: "FETCH_NEWS_SUCCESS", payload: response.data});
-        dispatch({type: "LOADING_COMPLETE"});
+        dispatch({ type: 'FETCH_NEWS_SUCCESS', payload: response.data });
+        dispatch({ type: 'LOADING_COMPLETE' });
       }
     });
 
     return function cleanup() {
       mounted = false;
     };
-  }, []);
+  }, [dispatch]);
 
   if (state.page.status.loading) {
     return (
       <div style={loaderStyles}>
         <Container>
-          <Row style={{textAlign: "center"}}>
+          <Row style={{ textAlign: 'center' }}>
             <Col>
               <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
@@ -114,29 +73,7 @@ function News() {
         <Row className="stock-row">
           <Col>
             <Row>
-              {/* <Col></Col> */}
               <Col>
-                {/* <Carousel>
-                    {stocks.map((stock, i) => {
-                      if (i < 5) {
-                        return (
-                          <Carousel.Item>
-                            <a href={stock.url} target="_blank">
-                              <img
-                                className="d-block w-100"
-                                src={stock.image}
-                                alt={stock.headline}
-                                style={imageStyles}
-                              />
-                            </a>
-                            <Carousel.Caption>
-                              <h3>{stock.headline}</h3>
-                            </Carousel.Caption>
-                          </Carousel.Item>
-                        );
-                      }
-                    })}
-                  </Carousel> */}
                 <Card>
                   <Card.Body>
                     <Carousel activeIndex={index} onSelect={handleSelect}>
@@ -169,14 +106,8 @@ function News() {
                       {state.data.news.response[index].summary}
                     </Card.Text>
                   </Card.Body>
-                  {/* <Card.Footer>
-                      <small className="text-muted">
-                        Last updated 3 mins ago
-                      </small>
-                    </Card.Footer> */}
                 </Card>
               </Col>
-              {/* <Col></Col> */}
             </Row>
 
             <br></br>
