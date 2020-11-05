@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import NewsCard from '../../molecules/NewsCard';
-import WatchList from '../../molecules/WatchList';
-import StockModal from '../../molecules/StockModal';
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import NewsCard from "../../molecules/NewsCard";
+import WatchList from "../../molecules/WatchList";
+import StockModal from "../../molecules/StockModal";
 import {
   Card,
   CardColumns,
@@ -10,51 +11,63 @@ import {
   Container,
   Row,
   Spinner,
-} from 'react-bootstrap';
-import { useAppContext } from '../../store/GlobalState';
-import { searchNews } from '../../utils';
+} from "react-bootstrap";
+// import {useAppContext} from "../../store/GlobalState";
+import {searchNews} from "../../utils";
 
-import './News.css';
+import {connect} from "react-redux";
+import {getGlobalState} from "../../redux/selectors";
+import {fetchNewsSuccess, loadingComplete} from "../../redux/actions";
 
-function News() {
-  const [state, dispatch] = useAppContext();
+import "./News.css";
 
+function News(props) {
+  // console.log(props);
+  // return <div></div>;
   const [modalShow, setModalShow] = useState(false);
   const [searchedStock] = useState({});
   const [index, setIndex] = useState(0);
+
+  const {page, data} = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
   };
 
   const loaderStyles = {
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   };
 
   useEffect(() => {
-    let mounted = true;
+    console.log(page, data, data.news.response.length);
 
-    searchNews().then((response) => {
-      if (mounted) {
-        dispatch({ type: 'FETCH_NEWS_SUCCESS', payload: response.data });
-        dispatch({ type: 'LOADING_COMPLETE' });
-      }
-    });
+    let mounted = true;
+    if (data.news.response.length === 0) {
+      searchNews().then((response) => {
+        if (mounted) {
+          dispatch(fetchNewsSuccess(response));
+          dispatch(loadingComplete());
+          // dispatch({type: "FETCH_NEWS_SUCCESS", payload: response.data});
+          // dispatch({type: "LOADING_COMPLETE"});
+        }
+      });
+    }
 
     return function cleanup() {
       mounted = false;
     };
-  }, [dispatch]);
+  }, [page]);
 
-  if (state.page.status.loading) {
+  if (page.status.loading) {
     return (
       <div style={loaderStyles}>
         <Container>
-          <Row style={{ textAlign: 'center' }}>
+          <Row style={{textAlign: "center"}}>
             <Col>
               <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
@@ -77,7 +90,7 @@ function News() {
                 <Card>
                   <Card.Body>
                     <Carousel activeIndex={index} onSelect={handleSelect}>
-                      {state.data.news.response.map((stock, i) => {
+                      {data.news.response.map((stock, i) => {
                         return i < 5 ? (
                           <Carousel.Item key={i}>
                             <a
@@ -100,11 +113,9 @@ function News() {
                   </Card.Body>
                   <Card.Body>
                     <Card.Title>
-                      {state.data.news.response[index].headline}
+                      {data.news.response[index].headline}
                     </Card.Title>
-                    <Card.Text>
-                      {state.data.news.response[index].summary}
-                    </Card.Text>
+                    <Card.Text>{data.news.response[index].summary}</Card.Text>
                   </Card.Body>
                 </Card>
               </Col>
@@ -120,7 +131,7 @@ function News() {
             </Row>
 
             <CardColumns>
-              {state.data.news.response.map((stock, i) => {
+              {data.news.response.map((stock, i) => {
                 if (i >= 5) {
                   return (
                     <Col key={i}>
@@ -147,5 +158,8 @@ function News() {
     </div>
   );
 }
+
+// const mapStateToProps = (state) => state;
+// export default connect(mapStateToProps)(News);
 
 export default News;
