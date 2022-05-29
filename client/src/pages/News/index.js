@@ -17,7 +17,7 @@ import {searchNews} from "../../utils";
 
 import {connect} from "react-redux";
 import {getGlobalState} from "../../redux/selectors";
-import {fetchNewsSuccess, loadingComplete} from "../../redux/actions";
+import {fetchNews, loadingComplete} from "../../redux/actions";
 
 import "./News.css";
 
@@ -44,24 +44,19 @@ function News(props) {
   };
 
   useEffect(() => {
-    console.log(page, data, data.news.response.length);
+    console.log(data.news.response.length);
 
     let mounted = true;
     if (data.news.response.length === 0) {
-      searchNews().then((response) => {
-        if (mounted) {
-          dispatch(fetchNewsSuccess(response));
-          dispatch(loadingComplete());
-          // dispatch({type: "FETCH_NEWS_SUCCESS", payload: response.data});
-          // dispatch({type: "LOADING_COMPLETE"});
-        }
-      });
+      dispatch(fetchNews(dispatch, mounted));
+    } else if (data.news.response.length > 0) {
+      dispatch(loadingComplete());
     }
 
     return function cleanup() {
       mounted = false;
     };
-  }, [page]);
+  }, [data]);
 
   if (page.status.loading) {
     return (

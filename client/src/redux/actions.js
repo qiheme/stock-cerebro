@@ -1,13 +1,32 @@
 import * as actionTypes from "./actionTypes";
+import {searchNews} from "../utils";
+
+export function fetchNews(mounted) {
+  return function fetchNewsThunk(dispatch) {
+    dispatch({type: actionTypes.FETCH_NEWS});
+
+    if (!mounted) {
+      return;
+    } else {
+      searchNews()
+        .then((response) => {
+          dispatch({type: actionTypes.FETCH_NEWS_SUCCESS, payload: response});
+        })
+        .catch((error) => {
+          dispatch({type: actionTypes.FETCH_NEWS_FAILED});
+          console.error(error);
+        });
+    }
+  };
+}
 
 export const fetchNewsSuccess = (content) => ({
   type: actionTypes.FETCH_NEWS_SUCCESS,
   payload: content,
 });
 
-export const fetchNewsFailed = (content) => ({
+export const fetchNewsFailed = () => ({
   type: actionTypes.FETCH_NEWS_FAILED,
-  payload: content,
 });
 
 export const loadingBegin = (content) => ({
@@ -15,7 +34,6 @@ export const loadingBegin = (content) => ({
   payload: content,
 });
 
-export const loadingComplete = (content) => ({
+export const loadingComplete = () => ({
   type: actionTypes.LOADING_COMPLETE,
-  payload: content,
 });

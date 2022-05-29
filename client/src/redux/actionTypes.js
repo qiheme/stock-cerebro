@@ -1,3 +1,4 @@
+export const FETCH_NEWS = "FETCH_NEWS";
 export const FETCH_NEWS_FAILED = "FETCH_NEWS_FAILED";
 export const FETCH_NEWS_SUCCESS = "FETCH_NEWS_SUCCESS";
 export const LOADING_BEGIN = "LOADING_BEGIN";
