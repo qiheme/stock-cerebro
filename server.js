@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.get('/api/finnhub/general', (req, res) => {
-  finnhubClient.generalNews('general', {}, (error, data) => {
+  finnhubClient.marketNews('general', {}, (error, data) => {
     console.log(data);
     if (error) {
       res.send(error);
